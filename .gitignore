@@ -2,3 +2,5 @@
 Dataset
 *.model
 .idea
+client*
+*.jpg

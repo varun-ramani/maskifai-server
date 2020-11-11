@@ -1,7 +1,7 @@
 import cv2
 import numpy as np
 from keras.models import load_model
-model=load_model("model2-001.model")
+model=load_model("model2-002.model")
 
 labels_dict={0:'without mask',1:'mask'}
 color_dict={0:(0,0,255),1:(0,255,0)}
