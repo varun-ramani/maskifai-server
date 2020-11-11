@@ -28,10 +28,10 @@ def test(data):
     # detect MultiScale / faces
     faces = classifier.detectMultiScale(mini)
 
-    labels = []
+    faces = {}
     
     # Draw rectangles around each face
-    for f in faces:
+    for idx, f in enumerate(faces):
         (x, y, w, h) = [v * size for v in f] #Scale the shapesize backup
         #Save just the rectangle faces in SubRecFaces
         face_img = im[y:y+h, x:x+w]
@@ -46,12 +46,12 @@ def test(data):
 
         labels.append(label)
 
+        faces[f'face_{idx}'] = {'rect': f, 'label': label}
+
         # add a rectangle (todo: send this back to maskif?)
         # cv2.rectangle(im,(x,y),(x+w,y+h),color_dict[label],2)
         # cv2.rectangle(im,(x,y-40),(x+w,y),color_dict[label],-1)
         # cv2.putText(im, labels_dict[label], (x, y-10),cv2.FONT_HERSHEY_SIMPLEX,0.8,(255,255,255),2)
 
     # print(time.time() - t)
-    print(labels)
-
-    return labels
+    return faces
