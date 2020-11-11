@@ -7,7 +7,7 @@ socketio = SocketIO(app)
 
 @socketio.on('image')
 def handle_message(message):
-    open("message", "wb").write(message)
+    open("message.png", "wb").write(message)
 
 if __name__ == '__main__':
     socketio.run(app)
