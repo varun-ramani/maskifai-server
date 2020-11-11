@@ -6,8 +6,17 @@ from google.assistant.embedded.v1alpha2 import (
     embedded_assistant_pb2, embedded_assistant_pb2_grpc
 )
 
+# Unlocked by default
+locked = False
+
 def lock():
-    print("Locking!")
+    global locked
+    if not locked:
+        print("Locking!")
+        locked = True
 
 def unlock():
-    print("Unlocking!")
+    global locked
+    if locked:
+        print("Unlocking!")
+        locked = False

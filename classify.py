@@ -45,39 +45,32 @@ def classifybytes(imagedata):
 
 
 classifier_history = []
+lock_status = False
 
-def should_lock(imagedata):
-    results = classifybytes(imagedata)
 
-    classifier_history.append(results)
+def feed_image(imagedata):
+    # If this method returns true, then enough images have been classified
+    # in order to make decisions about locking and unlocking.
+    classifier_history.append(classifybytes(imagedata))
 
-    # Only begin checking for lock when the classifier history contains 8 elements
-    # Maybe use averages here?
-    if len(classifier_history) < 5:
-        return None
+    if len(classifier_history) < 6:
+        return False
 
     classifier_history.pop(0)
+    return True
+
+
+def should_lock():
     for result in classifier_history:
         if 0 not in result:
             return False
 
-
     return True
 
-def should_unlock(imagedata):
-    results = classifybytes(imagedata)
 
-    classifier_history.append(results)
-
-    # Only begin checking for lock when the classifier history contains 8 elements
-    # Maybe use averages here?
-    if len(classifier_history) < 5:
-        return None
-
-    classifier_history.pop(0)
+def should_unlock():
     for result in classifier_history:
         if 0 in result:
             return False
-
 
     return True
