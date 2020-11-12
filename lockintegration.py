@@ -23,8 +23,8 @@ grpc_channel = secure_authorized_channel(
 assistant = SampleTextAssistant("en-US", ga_config['deviceModelID'], ga_config['deviceID'], False,
                                 grpc_channel, 60 * 3 + 5)
 
-# Unlocked by default
-locked = False
+# Locked by default
+locked = True
 
 
 def lock():

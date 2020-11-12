@@ -5,6 +5,10 @@ import classify
 from classify import should_lock
 import lockintegration
 
+import cv2
+
+from lockintegration import lock
+
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'mysecretkey'
 
@@ -23,12 +27,34 @@ def disconnected():
 
 @socketio.on('image')
 def handle_image(imagedata):
-    classifier_ready = classify.feed_image()
+    classifier_ready = classify.feed_image(imagedata)
+
     if classifier_ready:
-        if lockintegration.locked and classify.should_unlock():
-            lockintegration.unlock()
-        elif not lockintegration.locked and classify.should_unlock():
-            lockintegration.lock()
+        if lockintegration.locked:
+            if classify.should_unlock():
+                print("Unlocking")
+                lockintegration.unlock()
+        else:
+            if classify.should_lock():
+                print("Locking")
+                lockintegration.lock()
+
+
+webcam = cv2.VideoCapture(0)
+while True:
+    (rval, image) = webcam.read()
+
+    cv2.imshow('LIVE',   image)
+    handle_image(image)
+    key = cv2.waitKey(10)
+    # if Esc key is press then break out of the loop
+    if key == 27:  # The Esc key
+        break
+
+
+webcam.release()
+cv2.destroyAllWindows()
+
 
 @app.route('/')
 def index():

@@ -2,7 +2,7 @@ import cv2
 import numpy as np
 from keras.models import load_model
 
-model = load_model("model2-003.model")
+model = load_model("model2-008.model")
 
 labels_dict = {0: 'without',
                1: 'with'}
@@ -14,13 +14,9 @@ size = 4
 classifier = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
 
 
-def classifybytes(imagedata):
-    # Turn the image into a format that we can use with OpenCV
-    image_array = np.frombuffer(imagedata, np.uint8)
-    im = cv2.imdecode(image_array, cv2.IMREAD_COLOR)
-
+def classify(image):
     # Flip the image
-    im = cv2.flip(im, 1, 1)
+    im = cv2.flip(image, 1, 1)
 
     # Resize the image to speed up detection
     mini = cv2.resize(im, (im.shape[1] // size, im.shape[0] // size))
@@ -44,33 +40,47 @@ def classifybytes(imagedata):
     return results
 
 
+def classifybytes(imagedata):
+    # Turn the image into a format that we can use with OpenCV
+    image_array = np.frombuffer(imagedata, np.uint8)
+    im = cv2.imdecode(image_array, cv2.IMREAD_COLOR)
+
+    return classify(im)
+
+
 classifier_history = []
 lock_status = False
 
 
 def feed_image(imagedata):
+    global classifier_history
+
     # If this method returns true, then enough images have been classified
     # in order to make decisions about locking and unlocking.
-    classifier_history.append(classifybytes(imagedata))
+    classifier_history.append(classify(imagedata))
 
-    if len(classifier_history) < 6:
+    if len(classifier_history) < 12:
         return False
 
     classifier_history.pop(0)
+
+    print(classifier_history)
     return True
+
+
+def count_frames_without_mask():
+    global classifier_history
+
+    num_without = 0
+    for result in classifier_history:
+        if 0 in result:
+            num_without += 1
+
+    return num_without
 
 
 def should_lock():
-    for result in classifier_history:
-        if 0 not in result:
-            return False
-
-    return True
-
+    return count_frames_without_mask() > 8
 
 def should_unlock():
-    for result in classifier_history:
-        if 0 in result:
-            return False
-
-    return True
+    return not should_lock()
