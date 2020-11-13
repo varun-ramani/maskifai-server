@@ -14,7 +14,7 @@ How can we solve this issue?
 Introducing Maskif.ai, the AI-powered smart lock. Maskif.ai uses computer vision to detect 
 people who are not wearing a mask and then subsequently locks the door to keep them out. Maskif.ai
 is compatible with Google Home, and thus can be used with a multitude of smart devices. Here is a 
-video which includes a demo and some more information about what Maskif.ai does
+video which includes a demo and some more information about what Maskif.ai does: https://www.youtube.com/watch?v=EG8_0GUnhqg&feature=youtu.be
 
 # How it works
 This repository communicates with a mobile app that's hosted in the Maskif.ai client repo (link above)
