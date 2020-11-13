@@ -39,7 +39,6 @@ def handle_image(imagedata):
                 print("Locking")
                 lockintegration.lock()
 
-
 webcam = cv2.VideoCapture(0)
 while True:
     (rval, image) = webcam.read()

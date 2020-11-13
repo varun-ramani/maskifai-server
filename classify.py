@@ -2,7 +2,7 @@ import cv2
 import numpy as np
 from keras.models import load_model
 
-model = load_model("model2-008.model")
+model = load_model("model2-009.model")
 
 labels_dict = {0: 'without',
                1: 'with'}
