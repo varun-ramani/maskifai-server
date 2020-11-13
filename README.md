@@ -41,6 +41,6 @@ the smart lock activates and locks the person out.
 <br>
 If you just want to test the classifier, run test.py using: ```python test.py```
 
-#Devpost
+# Devpost
 Check out our devpost at: https://devpost.com/software/maskif-ai.
 This project was created as part of YHack 2020
